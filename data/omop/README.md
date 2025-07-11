@@ -1,0 +1,1 @@
+Place your copies of the OMOP Concept and Concept Relationship tables in this directory.
