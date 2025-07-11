@@ -4,3 +4,4 @@ This repository provides an example script for combining the Mondo Disease Ontol
 # Prerequisites
 You will need to have previously downloaded and prepared, or otherwise made available, the OMOP CONCEPT and CONCEPT_RELATIONSHIP tables, or made copies available from your local OMOP instance, and place copies of those tables in data/omop. If you don't yet have these OMOP tables available, they can be downloaded from https://athena.ohdsi.org/vocabulary/list. Be sure that the ICD10CM, SNOMED, and MeSH vocabularies are included in the download in order to utilize those mappings from Mondo.
 
+Within the mondo_to_omop.py script, you will need to set the 'mondo_version' variable to indicate the release date of your desired Mondo version. Mondo KGX release versions can be found at https://kg-hub.berkeleybop.io/kg-obo/mondo/.
