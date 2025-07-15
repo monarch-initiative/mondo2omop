@@ -194,6 +194,7 @@ mondo_to_omop_df = pd.merge(mondo_to_omop_df, maps_to_df, left_on='concept_id', 
 
 # Prep a copy of the concept table for mapping to standard concepts.
 standard_concept_df = concept_df.copy()
+# Pre-filter to OMOP 'standard' concepts (standard_concept == 'S').
 standard_concept_df = standard_concept_df[standard_concept_df['standard_concept'] == 'S']
 standard_concept_df = standard_concept_df.rename(columns={'concept_id': 'standard_concept_id',
                                                           'concept_name': 'standard_concept_name',
