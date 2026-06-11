@@ -21,22 +21,47 @@ for path in paths:
 
 # *** Indicate the release date of the version of Mondo you wish to download from ***
 # https://kg-hub.berkeleybop.io/kg-obo/mondo/ in the format YYYY-MM-DD:
-mondo_version = '2025-04-01'
-
+# https://github.com/monarch-initiative/mondo/releases/download/v2026-06-02/mondo_edges.tsv
+# https://github.com/monarch-initiative/mondo/releases/download/v2026-06-02/mondo_nodes.tsv
+# mondo_version = '2025-04-01'
+mondo_version = input("Enter release data of desired Mondo version (YYYY-MM-DD), available at https://github.com/monarch-initiative/mondo/tags: ")
+# https://github.com/monarch-initiative/mondo/releases/download/v2026-06-02/mondo_nodes.tsv
 # Get and extract the Mondo KGX files
-mondo_url = 'https://kg-hub.berkeleybop.io/kg-obo/mondo/' + mondo_version + '/mondo_kgx_tsv.tar.gz'
-filename = 'data/mondo/mondo_kgx_tsv.tar.gz'
-with open(filename, "wb") as f:
-    r = requests.get(mondo_url)
+# mondo_url = 'https://kg-hub.berkeleybop.io/kg-obo/mondo/' + mondo_version + '/mondo_kgx_tsv.tar.gz'
+mondo_edges_url = 'https://github.com/monarch-initiative/mondo/releases/download/v' + mondo_version + '/mondo_edges.tsv'
+mondo_nodes_url = 'https://github.com/monarch-initiative/mondo/releases/download/v' + mondo_version + '/mondo_nodes.tsv'
+edges_filename = 'data/mondo/mondo_edges.tsv'
+nodes_filename = 'data/mondo/mondo_nodes.tsv'
+# Get the Mondo edges file
+with open(edges_filename, "wb") as f:
+    try :
+        r = requests.get(mondo_edges_url)
+        if r.status_code == 200:
+            print("Success: Retrieved Mondo edges file from {mondo_version} release")
+
+    except:
+        print("No corresponding Mondo edges file found for {mondo_version} release")
+        exit()
+
     f.write(r.content)
-file = tarfile.open(filename)
-file.extractall(path='data/mondo/')
-file.close()
+
+# Get the Mondo nodes file
+with open(nodes_filename, "wb") as f:
+    try :
+        r = requests.get(mondo_nodes_url)
+        if r.status_code == 200:
+            print("Success: Retrieved Mondo nodes file from {mondo_version} release")
+
+    except:
+        print("No corresponding Mondo nodes file found for {mondo_version} release")
+        exit()
+
+    f.write(r.content)
+
 
 # Load the Mondo edges and nodes files
-mondo_edges_df = pd.read_csv("data/mondo/mondo_kgx_tsv_edges.tsv", sep='\t', header=0, low_memory=False)
-mondo_nodes_df = pd.read_csv("data/mondo/mondo_kgx_tsv_nodes.tsv", sep='\t', header=0, low_memory=False)
-
+mondo_edges_df = pd.read_csv(edges_filename, sep='\t', header=0, low_memory=False)
+mondo_nodes_df = pd.read_csv(nodes_filename, sep='\t', header=0, low_memory=False)
 
 # *** Build the Mondo graph from the Mondo edges and nodes files. ***
 edges_df = mondo_edges_df.copy()
